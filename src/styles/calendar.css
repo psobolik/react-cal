@@ -1,0 +1,81 @@
+#calendar {
+    --border-color: #ffffff;
+
+    --current-month-cell-border-color: #9aa0c2;
+    --current-month-cell-color: #050538;
+    --current-month-cell-background-color: #a3b6f3;
+
+    --default-month-cell-background-color: #eeeeff;
+    --default-month-cell-color: #202022;
+    --default-month-cell-border-color: #d1ccee;
+
+    --heading-cell-background-color: #0c27bd;
+    --heading-cell-color: #fafaff;
+    --heading-cell-border-color: #2d2d8a;
+
+    --current-day-cell-background-color: #454ec7;
+    --current-day-cell-color: #ffeeee;
+
+    --selected-day-color: #111159;
+    --selected-day-background-color: #888fcc;
+
+    --current-day-selected-day-cell-background-color: #000088;
+    --current-day-selected-day-cell-color: #ffeeee;
+}
+
+#calendar {
+    width: 60em;
+    border: var(--border-color) thin solid;
+}
+
+div.calendar-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+div.calendar-row .cell {
+    background: var(--default-month-cell-background-color);
+    color: var(--default-month-cell-color);
+    border-color: var(--default-month-cell-border-color);
+    padding: 0.5em 0.75em;
+    border-style: solid;
+    border-width: 1px;
+}
+
+div.calendar-row .cell.heading {
+    background: var(--heading-cell-background-color);
+    color: var(--heading-cell-color);
+    border-color: var(--heading-cell-border-color);
+}
+
+div.calendar-row .cell.selected-day {
+    font-weight: bold;
+    color: var(--selected-day-color);
+    background-color: var(--selected-day-background-color);
+}
+
+div.calendar-row .current-month {
+    background: var(--current-month-cell-background-color);
+    color: var(--current-month-cell-color);
+    border-color: var(--current-month-cell-border-color);
+}
+
+div.calendar-row .current-day {
+    background-color: var(--current-day-cell-background-color);
+    color: var(--current-day-cell-color);
+}
+
+div.calendar-row .current-day.selected-day {
+    color: var(--current-day-selected-day-cell-color);
+    background-color: var(--current-day-selected-day-cell-background-color);
+}
+
+div.calendar-row .show-month {
+    font-weight: bold;
+}
+
+@media (prefers-color-scheme: light) {
+    #calendar {
+        border-color: var(--heading-cell-background-color);
+    }
+}

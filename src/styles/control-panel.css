@@ -1,0 +1,88 @@
+#control-panel {
+    --color: #dce1ff;
+    --border-color: #ffeeee;
+    --background-color: #0c24bd;
+    --button-background-color: #5565c5;
+    --icon-color: #e2e1f1;
+    --button-hover-background-color: #0c27bd;
+    --button-hover-border-color: #ffeeee;
+    --icon-hover-color: #ffeeee;
+}
+
+#control-panel {
+    border: solid var(--border-color) 1px;
+    border-radius: 5px;
+    color: var(--color);
+    background-color: var(--background-color);
+    padding: 0.5em;
+    margin: auto 0.5em;
+}
+
+#control-panel button {
+    border-color: var(--border-color);
+    background-color: var(--button-background-color);
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    width: 3em;
+    height: 3em;
+}
+
+#control-panel button svg {
+    stroke: var(--icon-color);
+    fill-opacity: 1;
+    fill: var(--icon-color);
+    stroke-opacity: 1;
+    width: 16px;
+    height: 21px;
+}
+
+#control-panel button svg.left {
+    transform: translate(-0.125em) scale(1.5) rotate(-90deg);
+}
+
+#control-panel button svg.right {
+    transform: translate(-0.125em) scale(1.5) rotate(90deg);
+}
+
+#control-panel button svg.up {
+    transform: translate(-0.125em) scale(1.5);
+}
+
+#control-panel button svg.down {
+    transform: translate(-0.125em) scale(1.5) rotate(180deg);
+}
+
+#control-panel button:hover {
+    background-color: var(--button-hover-background-color);
+    border-color: var(--button-hover-border-color);
+}
+
+#control-panel button:hover svg {
+    stroke: var(--icon-hover-color);
+}
+
+#control-panel div.control-container {
+    align-items: center;
+    text-align: center;
+    display: inline-grid;
+    column-gap: 0.5em;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+button.icon-button {
+    margin-top: 2em;
+    font-size: small;
+}
+
+button.icon-button span {
+    display: inline-block;
+}
+
+@media (prefers-color-scheme: light) {
+    #control-panel {
+        border-color: var(--background-color);
+        background-color: var(--color);
+        color: var(--background-color);
+    }
+}

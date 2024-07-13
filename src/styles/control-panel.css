@@ -34,7 +34,7 @@
     fill: var(--icon-color);
     stroke-opacity: 1;
     width: 16px;
-    height: 21px;
+    height: 16px;
 }
 
 #control-panel button svg.left {
@@ -42,15 +42,15 @@
 }
 
 #control-panel button svg.right {
-    transform: translate(-0.125em) scale(1.5) rotate(90deg);
+    transform: translate(0.125em) scale(1.5) rotate(90deg);
 }
 
 #control-panel button svg.up {
-    transform: translate(-0.125em) scale(1.5);
+    transform: scale(1.5);
 }
 
 #control-panel button svg.down {
-    transform: translate(-0.125em) scale(1.5) rotate(180deg);
+    transform: scale(1.5) rotate(180deg);
 }
 
 #control-panel button:hover {

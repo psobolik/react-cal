@@ -28,8 +28,7 @@ export default class App extends React.Component<AppProps, AppState> {
   render = () => {
     return (
       <div style={{display: "inline-grid", columnGap: "1em"}}>
-        <ControlPanel onResize={this.setSize} onGoToToday={this.goToToday} onChangeDate={this.changeDate}
-                      selectedDate={this.state.selectedDate}/>
+        <ControlPanel onResize={this.setSize} onGoToToday={this.goToToday} onChangeDate={this.changeDate}/>
         <Heading selectedDate={this.state.selectedDate}/>
         <Calendar weeks={this.state.weeks} selectedDate={this.state.selectedDate}
                   onSetDate={(selectedDate: Date) => this.setState({selectedDate: selectedDate})}/>

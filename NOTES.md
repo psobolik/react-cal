@@ -1,5 +1,5 @@
 ```terminal
-⫸ pnpm create vite
+$ pnpm create vite
 √ Project name: ... react-cal
 √ Select a framework: » React
 √ Select a variant: » TypeScript
@@ -15,11 +15,16 @@ Done. Now run:
 
 Build:
 ```terminal
-pnpm build --base=/calendar --outDir=dist/calendar
+$ pnpm build 
 ```
 
 Preview: 
 ```terminal
-pnpm preview --outDir dist/calendar --base calendar --open
+$ pnpm preview --open
 ```
 
+Deploy: 
+```terminal
+$ sudo rm -r /var/www/html/calendar/*
+$ sudo cp -r dist/calendar/* /var/www/html/calendar
+```

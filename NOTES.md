@@ -13,18 +13,22 @@ Done. Now run:
   pnpm run dev
 ```
 
-Build:
-```terminal
-$ pnpm build 
-```
-
-Preview: 
+# Preview
 ```terminal
 $ pnpm preview --open
 ```
-
-Deploy: 
-```terminal
-$ sudo rm -r /var/www/html/calendar/*
-$ sudo cp -r dist/calendar/* /var/www/html/calendar
+# Install
+```shell
+$ pnpm install
+```
+# Build & deploy
+## pop-os
+```shell
+$ pnpm build
+$ sudo rsync --recursive --mkpath --delete ./dist/calendar/ /var/www/html/calendar/
+```
+## tilde.team
+```shell
+$ pnpm build --base=/~padeso/calendar --outDir=dist/tilde.team
+$ rsync --recursive --mkpath --delete ./dist/tilde.team/ tilde.team:~/public_html/calendar/
 ```

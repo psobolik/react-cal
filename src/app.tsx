@@ -3,107 +3,97 @@ import './styles/app.css'
 import React from 'react'
 import ControlPanel from "./control-panel.tsx";
 import Heading from "./heading.tsx";
-import Calendar from "./calendar.tsx";
+import Calendar, {MinWeeks, MaxWeeks} from "./calendar.tsx";
+import {DatePart} from "./date-part.ts";
+import Constants from "./constants.ts";
 
-export enum DatePart {
-  Date,
-  Month,
-  Year
-}
+const App: React.FunctionComponent = () => {
+    const [selectedDate, setSelectedDate] = React.useState<Date>(new Date());
+    const [weeks, setWeeks] = React.useState<number>(MinWeeks);
+    const [keyUpEventCode, setKeyUpEventCode] = React.useState<string>();
 
-interface AppProps {}
-interface AppState {
-  selectedDate: Date,
-  weeks: number
-}
+    const changeDate = React.useCallback((datePart: DatePart, amount: number) => {
+        let year = selectedDate.getFullYear()
+        let month = selectedDate.getMonth();
+        let date = selectedDate.getDate();
+        switch (datePart) {
+            case DatePart.Date:
+                date += amount;
+                break;
+            case DatePart.Month:
+                month += amount;
+                break;
+            case DatePart.Year:
+                year += amount;
+                break;
+        }
+        setSelectedDate(new Date(year, month, date));
+    }, [selectedDate])
 
-export default class App extends React.Component<AppProps, AppState> {
-  state: AppState = {selectedDate: new Date(), weeks: Calendar.minWeeks};
-
-  constructor(props: AppProps) {
-    super(props);
-    window.addEventListener("keyup", this.handleKeyUp);
-  }
-
-  render = () => {
-    return (
-      <div style={{display: "inline-grid", columnGap: "1em"}}>
-        <ControlPanel onResize={this.setSize} onGoToToday={this.goToToday} onChangeDate={this.changeDate}/>
-        <Heading selectedDate={this.state.selectedDate}/>
-        <Calendar weeks={this.state.weeks} selectedDate={this.state.selectedDate}
-                  onSetDate={(selectedDate: Date) => this.setState({selectedDate: selectedDate})}/>
-      </div>
-    )
-  }
-
-  handleKeyUp = (event: KeyboardEvent) => {
-    switch (event.code) {
-      case 'ArrowLeft':
-        this.changeDate(DatePart.Date, -1);
-        break;
-      case 'ArrowRight':
-        this.changeDate(DatePart.Date, 1);
-        break;
-      case 'ArrowUp':
-        this.changeDate(DatePart.Date, -7);
-        break;
-      case 'ArrowDown':
-        this.changeDate(DatePart.Date, 7);
-        break;
-      case 'PageUp':
-        this.changeDate(DatePart.Month, -1);
-        break;
-      case 'PageDown':
-        this.changeDate(DatePart.Month, 1);
-        break;
-      case 'Equal':
-      case 'NumpadAdd':
-      case 'Insert':
-        this.expand();
-        break;
-      case 'Minus':
-      case 'NumpadSubtract':
-      case 'Delete':
-        this.contract();
-        break;
-      case 'Home':
-        this.goToToday()
+    const goToToday = (): void => {
+        setSelectedDate(new Date())
     }
-  }
 
-  changeDate = (datePart: DatePart, amount: number) => {
-    let year = this.state.selectedDate.getFullYear()
-    let month = this.state.selectedDate.getMonth();
-    let date = this.state.selectedDate.getDate();
-    switch (datePart) {
-      case DatePart.Date:
-        date += amount;
-        break;
-      case DatePart.Month:
-        month += amount;
-        break;
-      case DatePart.Year:
-        year += amount;
-        break;
-    }
-    this.setState({selectedDate: new Date(year, month, date)});
-  }
+    const expand = React.useCallback(() => {
+        setWeeks(Math.min(weeks + 2, MaxWeeks));
+    }, [weeks])
 
-  goToToday = (): void => {
-    this.setState({selectedDate: new Date()})
-  }
+    const contract = React.useCallback(() => {
+        setWeeks(Math.max(weeks - 2, MinWeeks));
+    }, [weeks])
 
-  setSize = (increase: boolean): void => {
-    const weeks = increase ? this.state.weeks + 2 : this.state.weeks - 2;
-    if (weeks >= Calendar.minWeeks)
-      this.setState({weeks: weeks});
-  }
+    const handleKeyUp = React.useCallback((eventCode: string) => {
+        switch (eventCode) {
+            case 'ArrowLeft':
+                changeDate(DatePart.Date, -1);
+                break;
+            case 'ArrowRight':
+                changeDate(DatePart.Date, 1);
+                break;
+            case 'ArrowUp':
+                changeDate(DatePart.Date, -Constants.DaysInWeek);
+                break;
+            case 'ArrowDown':
+                changeDate(DatePart.Date, Constants.DaysInWeek);
+                break;
+            case 'PageUp':
+                changeDate(DatePart.Month, -1);
+                break;
+            case 'PageDown':
+                changeDate(DatePart.Month, 1);
+                break;
+            case 'Equal':
+            case 'NumpadAdd':
+            case 'Insert':
+                expand();
+                break;
+            case 'Minus':
+            case 'NumpadSubtract':
+            case 'Delete':
+                contract();
+                break;
+            case 'Home':
+                goToToday()
+        }
+        setKeyUpEventCode(undefined)
+    }, [changeDate, contract, expand])
 
-  expand = () => {
-    this.setSize(true);
-  }
+    React.useEffect(() => {
+        const keyUp = (event: KeyboardEvent) => setKeyUpEventCode(event.code);
+        window.addEventListener("keyup", keyUp);
+        return () => {
+            window.removeEventListener("keyup", keyUp);
+        }
+    }, [])
+    React.useEffect(() => {
+        if (keyUpEventCode) handleKeyUp(keyUpEventCode);
+    }, [handleKeyUp, keyUpEventCode]);
 
-  contract = () => {
-    this.setSize(false);
-  }
+    return (<div style={{display: "inline-grid", columnGap: "1em"}}>
+            <ControlPanel gridRow={"2"} gridCol={"1"} expand={expand} canExpand={weeks < MaxWeeks} contract={contract} canContract={weeks > MinWeeks} goToToday={goToToday} onChangeDate={changeDate}/>
+            <Heading gridRow={"1"} gridCol={"2"} selectedDate={selectedDate}/>
+            <Calendar gridRow={"2/4"} gridColumn={"2"} weeks={weeks} selectedDate={selectedDate}
+                      onSetDate={(selectedDate: Date) => setSelectedDate(selectedDate)}/>
+        </div>)
 }
+export default App;

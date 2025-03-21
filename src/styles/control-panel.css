@@ -1,24 +1,29 @@
 #control-panel {
-    --color: #dce1ff;
-    --border-color: #ffeeee;
-    --background-color: #0c24bd;
-    --button-background-color: #5565c5;
-    --icon-color: #e2e1f1;
-    --button-hover-background-color: #0c27bd;
-    --button-hover-border-color: #ffeeee;
-    --icon-hover-color: #ffeeee;
-}
+  --light-color: #dce1ff;
+  --border-color: #ffeeee;
+  --dark-color: #0c24bd;
+  --button-background-color: #5565c5;
+  --icon-color: #e2e1f1;
+  --button-hover-background-color: #0c27bd;
+  --button-hover-border-color: #ffeeee;
+  --icon-hover-color: #ffeeee;
+  --disabled-border-color: #0c24bd;
+  --disabled-background-color: #b0b0ee;
+  --icon-disable-color: #6060ff;
 
-#control-panel {
-    border: solid var(--border-color) 1px;
-    border-radius: 5px;
-    color: var(--color);
-    background-color: var(--background-color);
-    padding: 0.5em;
-    margin: auto 0.5em;
-}
+  border: solid var(--border-color) 1px;
+  border-radius: 5px;
+  color: var(--light-color);
+  background-color: var(--dark-color);
+  padding: 0.5em;
+  margin: auto 0.5em;
 
-#control-panel button {
+  & div.control-container {
+    align-items: center;
+    text-align: center;
+  }
+
+  & button {
     border-color: var(--border-color);
     background-color: var(--button-background-color);
     border-style: solid;
@@ -26,63 +31,59 @@
     border-width: 1px;
     width: 3em;
     height: 3em;
-}
 
-#control-panel button svg {
-    stroke: var(--icon-color);
-    fill-opacity: 1;
-    fill: var(--icon-color);
-    stroke-opacity: 1;
-    width: 16px;
-    height: 16px;
-}
+    &:hover {
+      background-color: var(--button-hover-background-color);
+      border-color: var(--button-hover-border-color);
 
-#control-panel button svg.left {
-    transform: translate(-0.125em) scale(1.5) rotate(-90deg);
-}
+      & svg {
+        stroke: var(--icon-hover-color);
+      }
 
-#control-panel button svg.right {
-    transform: translate(0.125em) scale(1.5) rotate(90deg);
-}
+    }
 
-#control-panel button svg.up {
-    transform: scale(1.5);
-}
+    &[disabled] {
+      border-color: var(--disabled-border-color);
+      background-color: var(--disabled-background-color);
+      cursor: not-allowed;
 
-#control-panel button svg.down {
-    transform: scale(1.5) rotate(180deg);
-}
+      & svg {
+        stroke: var(--icon-disable-color);
+        fill: var(--icon-disable-color);
+      }
+    }
 
-#control-panel button:hover {
-    background-color: var(--button-hover-background-color);
-    border-color: var(--button-hover-border-color);
-}
+    & svg {
+      stroke: var(--icon-color);
+      fill-opacity: 1;
+      fill: var(--icon-color);
+      stroke-opacity: 1;
+      width: 16px;
+      height: 16px;
 
-#control-panel button:hover svg {
-    stroke: var(--icon-hover-color);
-}
+      &.left {
+        transform: translate(-0.125em) scale(1.5) rotate(-90deg);
+      }
 
-#control-panel div.control-container {
-    align-items: center;
-    text-align: center;
-    display: inline-grid;
-    column-gap: 0.5em;
-    grid-template-columns: repeat(3, 1fr);
-}
+      &.right {
+        transform: translate(0.125em) scale(1.5) rotate(90deg);
+      }
 
-button.icon-button {
-    margin-top: 2em;
-    font-size: small;
-}
+      &.up {
+        transform: scale(1.5);
+      }
 
-button.icon-button span {
-    display: inline-block;
+      &.down {
+        transform: scale(1.5) rotate(180deg);
+      }
+    }
+  }
 }
 
 @media (prefers-color-scheme: light) {
-    #control-panel {
-        border-color: var(--background-color);
-        background-color: var(--color);
-        color: var(--background-color);
-    }
+  #control-panel {
+    border-color: var(--dark-color);
+    background-color: var(--light-color);
+    color: var(--dark-color);
+  }
 }
